@@ -355,7 +355,7 @@ elif choice == 'Prediction':
             st.warning('Your Result : You have Alizimers', icon="⚠️")
             from plyer import notification
             import time
-        else eTIV>1575 and SES<5:
+        elif eTIV>1575 and SES<5:
             re = "Dementiated"
             st.warning('Your Result : You have Alizimers', icon="⚠️")
             from plyer import notification
