@@ -8,31 +8,30 @@ from PIL import Image
 
 sns.set() 
 
-st.title("Dimentia Detection ")
+st.title("Alzheimer Detection ")
 
 activities = ["Introduction", "Statistics", "Prediction", "About Us"]
 choice = st.sidebar.selectbox("Select Activities", activities)
 if choice == 'Introduction':
     st.markdown(
-        "Dimentia is a term used to describe a group of symptoms affecting memory, thinking and social abilities severely enough to interfere with your daily life. It isn't a specific disease, but several diseases can cause Dimentia. Though Dimentia generally involves memory loss, memory loss has different causes")
+        "Alzheimer is a term used to describe a group of symptoms affecting memory, thinking and social abilities severely enough to interfere with your daily life. It isn't a specific disease, but several diseases can cause Alzheimer. Though Alzheimer generally involves memory loss, memory loss has different causes")
     st.title("A look into the scientific side of demenetia ")
     st.write("Parameters taken")
-    st.write("A major parameters for Dimentia prediction is MMSE,SES,eTIV,nWBV,ASF")
+    st.write("A major parameters for Alzheimer prediction is MMSE,SES,eTIV,nWBV,ASF")
     st.write("MMSE - Mini Mental State Examination")
     st.write("SES - Social Economic State")
     st.write("eTIV - Estimated Total Intracranial Volume")
     st.write("nWBV - Normalised  Whole Brain Volume")
     st.write("ASF - Atlas Scaling Factor")
-    st.write("Each one of those parameters have a particular effect when predicting Dimentia.")
+    st.write("Each one of those parameters have a particular effect when predicting Alzheimer.")
     
 # ==========================================================================================================================
 
 elif choice == 'Statistics':
     import matplotlib.pyplot as plt
 
-    st.title("Wanna Clarify about your Dimentia status ?")
+    st.title("Wanna Clarify about your Alzheimer status ?")
     df = pd.read_csv("oasis_longitudinal.csv")
-    st.set_option('deprecation.showPyplotGlobalUse', False)
     # ================================================
     df = df.loc[df['Visit'] == 1]
     # use first visit data only because of the analysis
@@ -63,11 +62,11 @@ elif choice == 'Statistics':
     plt.title('Gender v/s Demented rate')
     # =================================================================
     # Create a bar chart using the value_counts() method on the 'M/F' column of the DataFrame
-    Dimentia_by_gender = df[df['Group'] == 1]['M/F'].value_counts()
-    Dimentia_by_gender.plot(kind='bar')
+    Alzheimer_by_gender = df[df['Group'] == 1]['M/F'].value_counts()
+    Alzheimer_by_gender.plot(kind='bar')
     # Set the title and axis labels
-    st.subheader('Dimentia Distribution by Gender :')
-    plt.title('Dimentia Distribution by Gender')
+    st.subheader('Alzheimer Distribution by Gender :')
+    plt.title('Alzheimer Distribution by Gender')
     plt.xlabel('Gender (Female=0, Male=1)')
     plt.ylabel('Number of Patients')
     # Display the chart in Streamlit
@@ -150,7 +149,6 @@ elif choice == 'Prediction':
 
     st.title("Check your Dementia status...")
     df = pd.read_csv(r"oasis_longitudinal.csv")
-    st.set_option('deprecation.showPyplotGlobalUse', False)
     # ================================================
     df = df.loc[df['Visit'] == 1]
     # use first visit data only because of the analysis
@@ -254,13 +252,14 @@ elif choice == 'Prediction':
     # plt.show()
 
     # ============================================================================================================================================    PREDICTION
-
-    gender = st.sidebar.selectbox(
+    exang = st.sidebar.selectbox('Select Your Algorithm',['Simple Linear Regression',"Logistic Regression","SVM"] )
+    
+    gender = st.selectbox(
         "Gender",
         ("Female", "Male")
     )
     gender = 1 if gender == "Male" else 2
-    age = st.sidebar.selectbox(
+    age = st.selectbox(
         "Age",
         ('18 to 24', '25 to 29', '30 to 34', '35 to 39', '40 to 44', '45 to 49', '50 to 54', '55 to 59', '60 to 64',
          '65 to 69', '70 to 74', '75 to 79', '80 or older')
@@ -291,12 +290,12 @@ elif choice == 'Prediction':
         age = 12
     else:
         age = 13
-    EDUC = st.sidebar.slider("Years of Education", max_value=30)
-    MMSE = st.sidebar.slider("MMSE Value", max_value=40)
-    SES = st.sidebar.slider("SES Value", max_value=10)
-    eTIV = st.sidebar.slider("eTIV Value", max_value=2040)
-    nWBV = st.sidebar.number_input("nWBV Value")
-    ASF = st.sidebar.number_input("ASF Value")
+    EDUC = st.slider("Years of Education", max_value=30)
+    MMSE = st.slider("MMSE Value", max_value=40)
+    SES = st.slider("SES Value", max_value=10)
+    eTIV = st.slider("eTIV Value", max_value=2040)
+    nWBV = st.number_input("nWBV Value")
+    ASF = st.number_input("ASF Value")
     import numpy as np
     import matplotlib.pyplot as plt
     import pandas as pd
@@ -345,42 +344,43 @@ elif choice == 'Prediction':
     mmse = regressor.predict([[nWBV, eTIV, SES]])  # for mmse
     print(mmse)
     print(nWBV, eTIV, SES)
-    if mmse > 26.77:
-        st.success('Your Result : You are Non Dementiated', icon="✅")
-        st.balloons()
-        re = "Non Dementiated"
-    elif age>11:
-        re = "Dementiated"
-        st.warning('Your Result : You are Dementiated', icon="⚠️")
-        from plyer import notification
-        import time
-    elif eTIV>1600:
-        re = "Dementiated"
-        st.warning('Your Result : You are Dementiated', icon="⚠️")
-        from plyer import notification
-        import time
-    else:
-        re = "Dementiated"
-        st.warning('Your Result : You are Dementiated', icon="⚠️")
-        from plyer import notification
-        import time
-
-        # Define the notification message and icon
-        title = 'Warning'
-        message = 'Your Result : You are Dementiated'
-        # Show the notification with the animated icon
-        notification.notify(
-            title=title,
-            message=message,
-            timeout=5,
-            toast=True
-        )
-        # Keep the notification displayed for 5 seconds
-        for i in range(5):
-            time.sleep(1)
+    sv=st.button("Predict")
+    if sv:
+        if mmse > 26.77:
+            st.success('Your Result : You dont have Alizimers', icon="✅")
+            st.balloons()
+            re = "Non Dementiated"
+        elif age>11:
+            re = "Dementiated"
+            st.warning('Your Result : You have Alizimers', icon="⚠️")
+            from plyer import notification
+            import time
+        else eTIV>1575 and SES<5:
+            re = "Dementiated"
+            st.warning('Your Result : You have Alizimers', icon="⚠️")
+            from plyer import notification
+            import time
+        else:
+            re = "Dementiated"
+            st.warning('Your Result : You have Alizimers', icon="⚠️")
+            from plyer import notification
+            import time
+    
+            # Define the notification message and icon
+            title = 'Warning'
+            message = 'Your Result : You have Alizimers'
+            # Show the notification with the animated icon
+            notification.notify(
+                title=title,
+                message=message,
+                timeout=5,
+                toast=True
+            )
+            # Keep the notification displayed for 5 seconds
+            for i in range(5):
+                time.sleep(1)
     
         
 # ============================================================================================
 elif choice == "About Us":
-    st.info("CREATED BY Vishwam")
-
+    st.info("CREATED BY Vishvam")
