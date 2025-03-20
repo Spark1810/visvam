@@ -8,29 +8,29 @@ from PIL import Image
 
 sns.set() 
 
-st.title("Alzheimer Detection ")
+st.title("Dimentia Detection ")
 
 activities = ["Introduction", "Statistics", "Prediction", "About Us"]
 choice = st.sidebar.selectbox("Select Activities", activities)
 if choice == 'Introduction':
     st.markdown(
-        "Alzheimer is a term used to describe a group of symptoms affecting memory, thinking and social abilities severely enough to interfere with your daily life. It isn't a specific disease, but several diseases can cause Alzheimer. Though Alzheimer generally involves memory loss, memory loss has different causes")
+        "Dimentia is a term used to describe a group of symptoms affecting memory, thinking and social abilities severely enough to interfere with your daily life. It isn't a specific disease, but several diseases can cause Dimentia. Though Dimentia generally involves memory loss, memory loss has different causes")
     st.title("A look into the scientific side of demenetia ")
     st.write("Parameters taken")
-    st.write("A major parameters for Alzheimer prediction is MMSE,SES,eTIV,nWBV,ASF")
+    st.write("A major parameters for Dimentia prediction is MMSE,SES,eTIV,nWBV,ASF")
     st.write("MMSE - Mini Mental State Examination")
     st.write("SES - Social Economic State")
     st.write("eTIV - Estimated Total Intracranial Volume")
     st.write("nWBV - Normalised  Whole Brain Volume")
     st.write("ASF - Atlas Scaling Factor")
-    st.write("Each one of those parameters have a particular effect when predicting Alzheimer.")
+    st.write("Each one of those parameters have a particular effect when predicting Dimentia.")
     
 # ==========================================================================================================================
 
 elif choice == 'Statistics':
     import matplotlib.pyplot as plt
 
-    st.title("Wanna Clarify about your Alzheimer status ?")
+    st.title("Wanna Clarify about your Dimentia status ?")
     df = pd.read_csv("oasis_longitudinal.csv")
     st.set_option('deprecation.showPyplotGlobalUse', False)
     # ================================================
@@ -63,11 +63,11 @@ elif choice == 'Statistics':
     plt.title('Gender v/s Demented rate')
     # =================================================================
     # Create a bar chart using the value_counts() method on the 'M/F' column of the DataFrame
-    Alzheimer_by_gender = df[df['Group'] == 1]['M/F'].value_counts()
-    Alzheimer_by_gender.plot(kind='bar')
+    Dimentia_by_gender = df[df['Group'] == 1]['M/F'].value_counts()
+    Dimentia_by_gender.plot(kind='bar')
     # Set the title and axis labels
-    st.subheader('Alzheimer Distribution by Gender :')
-    plt.title('Alzheimer Distribution by Gender')
+    st.subheader('Dimentia Distribution by Gender :')
+    plt.title('Dimentia Distribution by Gender')
     plt.xlabel('Gender (Female=0, Male=1)')
     plt.ylabel('Number of Patients')
     # Display the chart in Streamlit
@@ -349,6 +349,16 @@ elif choice == 'Prediction':
         st.success('Your Result : You are Non Dementiated', icon="✅")
         st.balloons()
         re = "Non Dementiated"
+    elif age>11:
+        re = "Dementiated"
+        st.warning('Your Result : You are Dementiated', icon="⚠️")
+        from plyer import notification
+        import time
+    elif eTIV>1600:
+        re = "Dementiated"
+        st.warning('Your Result : You are Dementiated', icon="⚠️")
+        from plyer import notification
+        import time
     else:
         re = "Dementiated"
         st.warning('Your Result : You are Dementiated', icon="⚠️")
@@ -372,5 +382,5 @@ elif choice == 'Prediction':
         
 # ============================================================================================
 elif choice == "About Us":
-    st.info("CREATED BY AKSHITH C V")
+    st.info("CREATED BY Vishwam")
 
