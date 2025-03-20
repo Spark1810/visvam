@@ -252,7 +252,6 @@ elif choice == 'Prediction':
     # plt.show()
 
     # ============================================================================================================================================    PREDICTION
-    exang = st.sidebar.selectbox('Select Your Algorithm',['Simple Linear Regression',"Logistic Regression","SVM"] )
     
     gender = st.selectbox(
         "Gender",
